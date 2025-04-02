@@ -2,9 +2,142 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buy'n'Sell</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #e8e8e8;
+            color: black;
+        }
+        .header {
+            background: linear-gradient(135deg, #ff5733, #ff914d);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 30px;
+            letter-spacing: 2px;
+            font-weight: 600;
+        }
+        .buttons {
+            display: flex;
+            gap: 10px;
+        }
+        .buttons button, .search-bar button, .category-buttons button {
+            padding: 12px;
+            border: none;
+            cursor: pointer;
+            background-color: #ff914d;
+            color: white;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: 0.3s;
+            font-weight: 500;
+        }
+        .buttons button:hover, .search-bar button:hover, .category-buttons button:hover {
+            background-color: #ffbd69;
+        }
+        .search-bar {
+            margin: 20px;
+            text-align: center;
+        }
+        .search-bar input {
+            padding: 12px;
+            width: 320px;
+            border-radius: 8px;
+            border: 2px solid #ff914d;
+            font-size: 16px;
+            outline: none;
+        }
+        .categories {
+            margin: 20px;
+            text-align: center;
+        }
+        .category-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        .ads {
+            text-align: center;
+        }
+        .ads-list {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+        }
+        .ads-list li {
+            border: 2px solid #ff914d;
+            padding: 15px;
+            width: 300px;
+            background-color: #2a2a2a;
+            border-radius: 10px;
+            transition: 0.3s;
+            text-align: left;
+        }
+        .ads-list li:hover {
+            background-color: #3a3a3a;
+            transform: scale(1.05);
+        }
+        .ads-list h3 {
+            margin: 0;
+            color: #ffbd69;
+        }
+    </style>
 </head>
 <body>
-    <h1>Привет джангр</h1>
+    <div class="header">
+        <h1>Buy'n'Sell</h1>
+        <div class="buttons">
+            <button onclick="location.href='/sign-in'">Sign In</button>
+            <button onclick="location.href='/log-in'">Log In</button>
+        </div>
+    </div>
+
+    <div class="search-bar">
+        <form method="GET">
+            <input type="text" name="q" placeholder="Поиск объявлений..." value="{{ query }}">
+            <button type="submit">Найти</button>
+        </form>
+    </div>
+
+    <div class="categories">
+        <h2>Категории</h2>
+        <div class="category-buttons">
+            <button>Недвижимость</button>
+            <button>Авто</button>
+            <button>Работа</button>
+            <button>Электроника</button>
+            <button>Услуги</button>
+        </div>
+    </div>
+
+    <div class="ads">
+        <h2>Объявления</h2>
+        <ul class="ads-list">
+            {% for ad in ads %}
+                <li>
+                    <h3>{{ ad.title }}</h3>
+                    <p>{{ ad.description }}</p>
+                    <p><strong>Цена:</strong> {{ ad.price }} руб.</p>
+                    <p><em>Опубликовано:</em> {{ ad.created_at }}</p>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
 </body>
 </html>
