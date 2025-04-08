@@ -1,23 +1,10 @@
-{% load static %}
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Вход</title>
-    <link rel="stylesheet" href="{% static 'css/login.css' %}">
-    <script defer src="{% static 'js/login.js' %}"></script>
+    <title>Title</title>
 </head>
 <body>
-    <div class="container">
-        <h2>Вход в аккаунт</h2>
-        <form action="{% url 'login' %}" method="POST">
-            {% csrf_token %}
-            <input type="email" name="email" placeholder="Email" required>
-            <input type="password" name="password" placeholder="Пароль" required>
-            <button type="submit">Войти</button>
-        </form>
-        <a href="{% url 'register' %}">Нет аккаунта? Зарегистрироваться</a>
-    </div>
+
 </body>
 </html>
