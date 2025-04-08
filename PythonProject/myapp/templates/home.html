@@ -103,8 +103,11 @@
     <div class="header">
         <h1>Buy'n'Sell</h1>
         <div class="buttons">
-            <button onclick="location.href='{% url 'register' %}'">Sign In</button>
-            <button onclick="location.href='{% url 'login' %}'">Log In</button>
+            {% if user.is_authenticated %}
+                <button onclick="location.href='{% url 'profile' %}'">Profile</button>
+            {% else %}
+                <button onclick="location.href='{% url 'register' %}'">Sign In</button>
+                <button onclick="location.href='{% url 'login' %}'">Log In</button>
         </div>
     </div>
 
