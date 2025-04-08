@@ -105,6 +105,7 @@
         <div class="buttons">
             {% if user.is_authenticated %}
                 <button onclick="location.href='{% url 'profile' %}'">Profile</button>
+                <button onclick="location.href='{% url 'create' %}'">Create listing</button>
             {% else %}
                 <button onclick="location.href='{% url 'register' %}'">Sign In</button>
                 <button onclick="location.href='{% url 'login' %}'">Log In</button>
