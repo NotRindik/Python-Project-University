@@ -75,4 +75,14 @@ a:hover {
     text-decoration: underline;
 }
 
+.helptext{
+        color: red;
+}
 
+ul {
+        color: red;
+}
+
+#id_password2_helptext {
+    color: black;
+}

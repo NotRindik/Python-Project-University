@@ -11,13 +11,11 @@
 <body>
     <div class="container">
         <h2>Регистрация</h2>
-        <form action="{% url 'register' %}" method="POST">
-            {% csrf_token %}
-            <input type="text" name="username" placeholder="Логин" required>
-            <input type="email" name="email" placeholder="Email" required>
-            <input type="password" name="password" placeholder="Пароль" required>
-            <button type="submit">Зарегистрироваться</button>
-        </form>
+        <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Зарегистрироваться</button>
+    </form>
         <a href="{% url 'login' %}">Уже есть аккаунт? Войти</a>
     </div>
 </body>

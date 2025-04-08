@@ -1,10 +1,21 @@
 from django.shortcuts import render
+from django.shortcuts import render, redirect
+from .forms import CustomUserCreationForm
+from django.contrib.auth import login
 
 def home(request):
     return render(request, 'home.html')
 
 def register(request):
-    return render(request, 'RegisterPage.html')
+    if request.method == "POST":
+        form = CustomUserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)  # Автоматический вход после регистрации
+            return redirect("home")  # Замени на свою главную страницу
+    else:
+        form = CustomUserCreationForm()
+    return render(request, "RegisterPage.html", {"form": form})
 
 def login(request):
     return render(request, 'LoginPage.html')
