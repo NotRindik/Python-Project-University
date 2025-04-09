@@ -1,24 +1,38 @@
-from django.shortcuts import render
-from django.shortcuts import render, redirect
-from .forms import CustomUserCreationForm
+from . import forms
 from django.contrib.auth import login
+from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate
 
 def home(request):
     return render(request, 'home.html')
 
 def register(request):
     if request.method == "POST":
-        form = CustomUserCreationForm(request.POST)
+        form = forms.CustomUserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
-            login(request, user)  # Автоматический вход после регистрации
             return redirect("home")  # Замени на свою главную страницу
     else:
-        form = CustomUserCreationForm()
+        form = forms.CustomUserCreationForm()
     return render(request, "RegisterPage.html", {"form": form})
 
+
 def login(request):
-    return render(request, 'LoginPage.html')
+    if request.method == "POST":
+        form = forms.CustomAuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect('home')  # или на нужную страницу после логина
+            else:
+                form.add_error(None, "Неверное имя пользователя или пароль.")
+    else:
+        form = forms.CustomAuthenticationForm()
+
+    return render(request, 'LoginPage.html', {'form': form})
 
 def listing(request):
     return render(request, 'listing_list.html')
