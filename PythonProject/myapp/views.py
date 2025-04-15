@@ -1,5 +1,5 @@
 from . import forms
-from django.contrib.auth import login
+from django.contrib.auth import login as auth_login
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate
 
@@ -25,7 +25,7 @@ def login(request):
             password = form.cleaned_data.get('password')
             user = authenticate(username=username, password=password)
             if user is not None:
-                login(request, user)
+                auth_login(request, user)
                 return redirect('home')  # или на нужную страницу после логина
             else:
                 form.add_error(None, "Неверное имя пользователя или пароль.")
