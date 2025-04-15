@@ -2,6 +2,8 @@ from . import forms
 from django.contrib.auth import login as auth_login
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate
+from django.contrib.auth.decorators import login_required
+from .models import User
 
 def home(request):
     return render(request, 'home.html')
@@ -37,8 +39,19 @@ def login(request):
 def listing(request):
     return render(request, 'listing_list.html')
 
+@login_required
 def profile(request):
-    return render(request, 'profile.html')
+    user = request.user
+    context = {
+        'user_name': user.username,
+        'first_name': user.first_name,
+        'last_name': user.last_name,
+        'phone': user.phone,
+        'avatar': user.avatar.url if user.avatar else None,
+        'is_verified': user.is_verified,
+    }
+    return render(request, 'profile.html', context)
+
 
 def edit(request):
     return render(request, 'edit_list.html')

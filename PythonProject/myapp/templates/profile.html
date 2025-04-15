@@ -73,35 +73,30 @@
 
   <div class="profile-container">
     <div class="profile-header">
-      <h1>Добро пожаловать, <span id="userName">Иван!</span></h1>
+      <h1>Добро пожаловать, <span id="userName">{{ user_name }}</span></h1>
       <div class="profile-actions">
-        <button class="btn" onclick="window.location.href='index.html'">Изменить профиль</button>
+        <button class="btn" onclick="window.location.href='edit_profile_url'">Изменить профиль</button>
       </div>
     </div>
     <div class="profile-details">
       <div class="profile-photo">
-        <img src="profile-pic.jpg" alt="Фото профиля" />
+        {% if avatar %}
+          <img src="{{ avatar }}" alt="Фото профиля" />
+        {% else %}
+          <img src="default-avatar.jpg" alt="Фото профиля" />
+        {% endif %}
       </div>
       <div class="profile-info">
         <h2>Информация о пользователе</h2>
         <ul>
-          <li><strong>Имя:</strong> <span id="userNameDetail">Иван Иванов</span></li>
-          <li><strong>Город:</strong> <span id="userCity">Москва</span></li>
-          <li><strong>Электронная почта:</strong> <span id="userEmail">ivan@example.com</span></li>
-          <li><strong>Объявлений размещено:</strong> <span id="userAds">10</span></li>
+          <li><strong>Имя:</strong> {{ first_name }} {{ last_name }}</li>
+          <li><strong>Телефон:</strong> {{ phone }}</li>
+          <li><strong>Электронная почта:</strong> {{ user.email }}</li>
+          <li><strong>Статус подтверждения:</strong> {% if is_verified %}Подтвержден{% else %}Не подтвержден{% endif %}</li>
         </ul>
       </div>
     </div>
   </div>
-
-  <script>
-
-    document.getElementById('userName').textContent = localStorage.getItem('name') || 'Неизвестно';
-    document.getElementById('userNameDetail').textContent = localStorage.getItem('name') || 'Неизвестно';
-    document.getElementById('userCity').textContent = localStorage.getItem('city') || 'Не указан';
-    document.getElementById('userEmail').textContent = localStorage.getItem('email') || 'Не указан';
-    document.getElementById('userAds').textContent = localStorage.getItem('ads') || '0';
-  </script>
 
 </body>
 </html>
