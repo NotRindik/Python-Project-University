@@ -3,7 +3,7 @@
 from .models import Task
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import User, Listing
+from .models import User, Ad
 @admin.register(Task)
 class TaskAdmin(admin.ModelAdmin):
     list_display = ('title', 'created_at')  # Поля, которые будут
@@ -23,4 +23,4 @@ class ListingAdmin(admin.ModelAdmin):
     ordering = ('-created_at',)
 
 admin.site.register(User, CustomUserAdmin)
-admin.site.register(Listing, ListingAdmin)
+admin.site.register(Ad, ListingAdmin)

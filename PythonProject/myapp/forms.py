@@ -1,7 +1,9 @@
+# myapp/forms.py
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm
+from .models import Ad
 
 class CustomUserCreationForm(UserCreationForm):
     email = forms.EmailField(required=True)
@@ -16,10 +18,6 @@ class CustomAuthenticationForm(AuthenticationForm):
     class Meta:
         fields = ['username', 'password']
 
-from django import forms
-from .models import Listing
-
-class ListingForm(forms.ModelForm):
-    class Meta:
-        model = Listing
+class AdForm(forms.ModelForm):
+        model = Ad
         fields = ['title', 'description', 'price', 'category', 'location', 'image']
