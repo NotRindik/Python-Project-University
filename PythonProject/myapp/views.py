@@ -4,7 +4,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate
 from django.contrib.auth.decorators import login_required
 from .models import CustomUser
-
+from django.contrib.auth import logout
+from django.contrib.auth import logout as django_logout
 def home(request):
     return render(request, 'home.html')
 
@@ -58,4 +59,8 @@ def edit(request):
 
 def create(request):
     return render(request, 'creeate_listing.html')
+
+def logout_view(request):
+    logout(request)
+    return redirect('home')
 

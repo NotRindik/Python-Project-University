@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -5,7 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Профиль пользователя</title>
   <style>
-
     body {
       font-family: Arial, sans-serif;
       margin: 0;
@@ -13,13 +13,11 @@
       background-color: #f4f4f4;
     }
 
-
     .profile-container {
       max-width: 1000px;
       margin: 0 auto;
       padding: 20px;
     }
-
 
     .profile-header {
       background: linear-gradient(135deg, #ff5733, #ff914d);
@@ -35,12 +33,10 @@
       margin: 0;
     }
 
-
     .profile-details {
       display: flex;
       margin-top: 20px;
     }
-
 
     .profile-photo img {
       width: 150px;
@@ -49,7 +45,6 @@
       object-fit: cover;
       margin-right: 20px;
     }
-
 
     .profile-info h2 {
       margin-top: 0;
@@ -67,32 +62,35 @@
     .profile-info li strong {
       color: #333;
     }
-    .categories {
-            margin: 20px;
-            text-align: center;
-     }
-        .category-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            flex-wrap: wrap;
-     }
-     .buttons {
-            display: flex;
-            gap: 10px;
-     }
-     .buttons button, .search-bar button, .category-buttons button {
-            padding: 12px;
-            border: none;
-            cursor: pointer;
-            background-color: #ff914d;
-            color: white;
-            border-radius: 8px;
-            font-size: 16px;
-            transition: 0.3s;
-            font-weight: 500;
-        }
 
+    .category-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      flex-wrap: wrap;
+      margin-top: 40px;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 10px;
+    }
+
+    .buttons button, .category-buttons button {
+      padding: 12px 20px;
+      border: none;
+      cursor: pointer;
+      background-color: #ff914d;
+      color: white;
+      border-radius: 8px;
+      font-size: 16px;
+      transition: 0.3s;
+      font-weight: 500;
+    }
+
+    .buttons form {
+      margin: 0;
+    }
   </style>
 </head>
 <body>
@@ -101,16 +99,20 @@
     <div class="profile-header">
       <h1>Добро пожаловать, <span id="userName">{{ user_name }}</span></h1>
       <div class="buttons">
-        <button class="btn" onclick="window.location.href='{% url 'edit' %}'">Изменить профиль</button>
-        <button class="btn" onclick="window.location.href='{% url 'logout' %}'">Выйти</button>
+        <button onclick="window.location.href='{% url 'edit' %}'">Изменить профиль</button>
+        <form method="post" action="{% url 'logout' %}">
+          {% csrf_token %}
+          <button type="submit">Выйти</button>
+        </form>
       </div>
     </div>
+
     <div class="profile-details">
       <div class="profile-photo">
         {% if avatar %}
-          <img src="{{ avatar }}" alt="Фото профиля" />
+          <img src="{{ avatar }}" alt="Фото профиля">
         {% else %}
-          <img src="default-avatar.jpg" alt="Фото профиля" />
+          <img src="{% static 'images/default-avatar.jpg' %}" alt="Фото профиля">
         {% endif %}
       </div>
       <div class="profile-info">
@@ -124,12 +126,10 @@
       </div>
     </div>
   </div>
-  <div class="category">
-    <div class="category-buttons">
-       <button onclick="window.location.href='{% url 'home' %}'">На главную</button>
-    </div>
-  </div>
 
+  <div class="category-buttons">
+    <button onclick="window.location.href='{% url 'home' %}'">На главную</button>
+  </div>
 
 </body>
 </html>
