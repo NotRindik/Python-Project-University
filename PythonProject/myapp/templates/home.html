@@ -106,6 +106,7 @@
             {% if user.is_authenticated %}
                 <button onclick="location.href='{% url 'profile' %}'">Profile</button>
                 <button onclick="location.href='{% url 'create' %}'">Create listing</button>
+                <button onclick="location.href='{% url 'listing' %}'">My lists</button>
             {% else %}
                 <button onclick="location.href='{% url 'register' %}'">Sign In</button>
                 <button onclick="location.href='{% url 'login' %}'">Log In</button>
@@ -130,6 +131,7 @@
             <button>Услуги</button>
         </div>
     </div>
+
 
     <div class="ads">
         <h2>Объявления</h2>
