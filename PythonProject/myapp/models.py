@@ -11,6 +11,7 @@ class Task(models.Model):
 
 
 class CustomUser(AbstractUser):
+    username = None
     email = models.EmailField(unique=True)
     first_name = models.CharField(max_length=30, blank=True, null=True)
     last_name = models.CharField(max_length=30, blank=True, null=True)
@@ -22,6 +23,8 @@ class CustomUser(AbstractUser):
         related_name='custom_user_set',
         blank=True
     )
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['first_name', 'last_name', 'phone']
     user_permissions = models.ManyToManyField(
         'auth.Permission',
         related_name='custom_user_permissions_set',
@@ -29,7 +32,7 @@ class CustomUser(AbstractUser):
     )
 
     def __str__(self):
-        return self.username
+        return self.email
 
 
 class Listing(models.Model):
