@@ -76,6 +76,7 @@
       <h1>Добро пожаловать, <span id="userName">{{ user_name }}</span></h1>
       <div class="profile-actions">
         <button class="btn" onclick="window.location.href='edit_profile_url'">Изменить профиль</button>
+        <button class="btn" onclick="window.location.href='{% url 'logout' %}'">Выйти</button>
       </div>
     </div>
     <div class="profile-details">
