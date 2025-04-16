@@ -3,7 +3,7 @@ from django.contrib.auth import login as auth_login
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate
 from django.contrib.auth.decorators import login_required
-from .models import User
+from .models import CustomUser
 
 def home(request):
     return render(request, 'home.html')
@@ -13,7 +13,7 @@ def register(request):
         form = forms.CustomUserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
-            return redirect("home")  # Замени на свою главную страницу
+            return redirect("home")
     else:
         form = forms.CustomUserCreationForm()
     return render(request, "RegisterPage.html", {"form": form})
