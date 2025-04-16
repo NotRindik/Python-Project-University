@@ -6,27 +6,38 @@ from django.contrib.auth.decorators import login_required
 from .models import CustomUser
 from django.contrib.auth import logout
 from django.contrib.auth import logout as django_logout
+from .forms import CustomUserCreationForm
 def home(request):
     return render(request, 'home.html')
 
+from django.shortcuts import render, redirect
+from django.contrib.auth import login
+from .forms import CustomUserCreationForm
+
 def register(request):
+
+    if request.user.is_authenticated:
+        return redirect('home')
+
     if request.method == "POST":
-        form = forms.CustomUserCreationForm(request.POST)
+        form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
-            return redirect("home")
-    else:
-        form = forms.CustomUserCreationForm()
-    return render(request, "RegisterPage.html", {"form": form})
 
+            login(request, user)
+            return redirect('home')
+    else:
+        form = CustomUserCreationForm()
+
+    return render(request, "RegisterPage.html", {"form": form})
 
 def login(request):
     if request.method == "POST":
         form = forms.CustomAuthenticationForm(request, data=request.POST)
         if form.is_valid():
-            username = form.cleaned_data.get('username')
+            email = form.cleaned_data.get('email')
             password = form.cleaned_data.get('password')
-            user = authenticate(username=username, password=password)
+            user = authenticate(email=email, password=password)
             if user is not None:
                 auth_login(request, user)
                 return redirect('home')  # или на нужную страницу после логина
