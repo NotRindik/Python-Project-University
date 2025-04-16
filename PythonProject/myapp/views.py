@@ -1,35 +1,43 @@
 from . import forms
 from django.contrib.auth import login as auth_login
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate
 from django.contrib.auth.decorators import login_required
-
-from .forms import ListingForm
 from .models import CustomUser
-from .models import Listing
-
+from django.contrib.auth import logout
+from django.contrib.auth import logout as django_logout
+from .forms import CustomUserCreationForm
 def home(request):
-    listing_model = Listing.objects.all().order_by('-created_at')
-    return render(request, 'home.html', {'listing': listing_model})
+    return render(request, 'home.html')
+
+from django.shortcuts import render, redirect
+from django.contrib.auth import login
+from .forms import CustomUserCreationForm
 
 def register(request):
+
+    if request.user.is_authenticated:
+        return redirect('home')
+
     if request.method == "POST":
-        form = forms.CustomUserCreationForm(request.POST)
+        form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
-            return redirect("home")
-    else:
-        form = forms.CustomUserCreationForm()
-    return render(request, "RegisterPage.html", {"form": form})
 
+            login(request, user)
+            return redirect('home')
+    else:
+        form = CustomUserCreationForm()
+
+    return render(request, "RegisterPage.html", {"form": form})
 
 def login(request):
     if request.method == "POST":
         form = forms.CustomAuthenticationForm(request, data=request.POST)
         if form.is_valid():
-            username = form.cleaned_data.get('username')
+            email = form.cleaned_data.get('email')
             password = form.cleaned_data.get('password')
-            user = authenticate(username=username, password=password)
+            user = authenticate(email=email, password=password)
             if user is not None:
                 auth_login(request, user)
                 return redirect('home')  # или на нужную страницу после логина
@@ -43,9 +51,6 @@ def login(request):
 def listing(request):
     return render(request, 'listing_list.html')
 
-def listing_detail(request, listing_id):
-    listing_page = get_object_or_404(Listing, id=listing_id)
-    return render(request, 'listing_page.html', {'listing': listing_page})
 @login_required
 def profile(request):
     user = request.user
@@ -64,15 +69,9 @@ def edit(request):
     return render(request, 'edit_list.html')
 
 def create(request):
-    if request.method == 'POST':
-        form = ListingForm(request.POST, request.FILES)
-        if form.is_valid():
-            listing = form.save(commit=False)
-            listing.user = request.user
-            listing.save()
-            return redirect('home')
-    else:
-        form = ListingForm()
+    return render(request, 'creeate_listing.html')
 
-    return render(request, 'creeate_listing.html', {'form': form})
+def logout_view(request):
+    logout(request)
+    return redirect('home')
 
