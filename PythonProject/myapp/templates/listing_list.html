@@ -86,5 +86,12 @@
             {% endif %}
         </div>
     </div>
+  <div class="category">
+      <h2  style="text-align: center;"><strong>Загружайте свои обьявления прямо сейчас!</strong></h2>>
+    <div class="category-buttons">
+       <button onclick="window.location.href='{% url 'create' %}'">Создать объявления</button>
+       <button onclick="window.location.href='{% url 'edit' %}'">Редактировать объявления</button>
+    </div>
+  </div>
 </body>
 </html>
