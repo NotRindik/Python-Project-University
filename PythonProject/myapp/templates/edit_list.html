@@ -4,16 +4,89 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Редактировать объявление</title>
+        <style>
+         body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #e8e8e8;
+            color: black;
+        }
+        .header {
+            background: linear-gradient(135deg, #ff5733, #ff914d);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+        }
+                .buttons {
+            display: flex;
+            gap: 10px;
+        }
+        .buttons button, .search-bar button, .category-buttons button {
+            padding: 12px;
+            border: none;
+            cursor: pointer;
+            background-color: #ff914d;
+            color: white;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: 0.3s;
+            font-weight: 500;
+        }
+        .buttons button:hover, .search-bar button:hover, .category-buttons button:hover {
+            background-color: #ffbd69;
+        }
+        .search-bar {
+            margin: 20px;
+            text-align: center;
+        }
+        .search-bar input {
+            padding: 12px;
+            width: 320px;
+            border-radius: 8px;
+            border: 2px solid #ff914d;
+            font-size: 16px;
+            outline: none;
+        }
+        .categories {
+            margin: 20px;
+            text-align: center;
+        }
+        .category-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+    </style>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <div class="container">
-        <h2 class="mt-5">Редактировать объявление: {{ listing.title }}</h2>
-        <form method="POST">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="btn btn-primary mt-3">Сохранить</button>
-        </form>
+    <div class="header">
+        <h1>Buy'n'Sell</h1>
+        <div class="buttons">
+            {% if user.is_authenticated %}
+                <button onclick="location.href='{% url 'profile' %}'">Profile</button>
+                <button onclick="location.href='{% url 'create' %}'">Create listing</button>
+                <button onclick="location.href='{% url 'listing' %}'">My lists</button>
+            {% else %}
+                <button onclick="location.href='{% url 'register' %}'">Sign In</button>
+                <button onclick="location.href='{% url 'login' %}'">Log In</button>
+            {% endif %}
+        </div>
     </div>
+  <div class="container">
+      <h2 style="text-align: center;"><strong>Редактировать объявление</strong></h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div class="category-buttons">
+        <button type="submit">Сохранить</button>
+        </div>
+    </form>
+  </div>
 </body>
 </html>
