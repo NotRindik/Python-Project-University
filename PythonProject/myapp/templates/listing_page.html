@@ -1,0 +1,20 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ listing.title }}</title>
+    <link rel="stylesheet" href="{% static 'css/listing_detail.css' %}">
+</head>
+<body>
+  <div class="detail-container">
+        <h1>{{ listing.title }}</h1>
+        <p><strong>Цена:</strong> {{ listing.price }} тг</p>
+        <p>{{ listing.description }}</p>
+        {% if listing.image %}
+            <img src="{{ listing.image.url }}">
+        {% endif %}
+        <a href="{% url 'home' %}" class="back-link">← Назад</a>
+    </div>
+</body>
+</html>

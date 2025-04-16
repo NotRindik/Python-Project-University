@@ -13,4 +13,5 @@ urlpatterns = [
     path('edit/', views.edit, name='edit'),
     path('create/', views.create, name='create'),
     path('logout/', LogoutView.as_view(next_page='home'), name='logout'),
+    path('listing/<int:listing_id>/', views.listing_detail, name='listing_detail'),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

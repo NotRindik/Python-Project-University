@@ -1,12 +1,16 @@
 from . import forms
 from django.contrib.auth import login as auth_login
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate
 from django.contrib.auth.decorators import login_required
+
+from .forms import ListingForm
 from .models import CustomUser
+from .models import Listing
 
 def home(request):
-    return render(request, 'home.html')
+    listing_model = Listing.objects.all().order_by('-created_at')
+    return render(request, 'home.html', {'listing': listing_model})
 
 def register(request):
     if request.method == "POST":
@@ -39,6 +43,9 @@ def login(request):
 def listing(request):
     return render(request, 'listing_list.html')
 
+def listing_detail(request, listing_id):
+    listing_page = get_object_or_404(Listing, id=listing_id)
+    return render(request, 'listing_page.html', {'listing': listing_page})
 @login_required
 def profile(request):
     user = request.user
@@ -57,5 +64,15 @@ def edit(request):
     return render(request, 'edit_list.html')
 
 def create(request):
-    return render(request, 'creeate_listing.html')
+    if request.method == 'POST':
+        form = ListingForm(request.POST, request.FILES)
+        if form.is_valid():
+            listing = form.save(commit=False)
+            listing.user = request.user
+            listing.save()
+            return redirect('home')
+    else:
+        form = ListingForm()
+
+    return render(request, 'creeate_listing.html', {'form': form})
 
