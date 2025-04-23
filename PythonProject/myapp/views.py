@@ -55,8 +55,11 @@ def listing_detail(request, listing_id):
     return render(request, 'listing_page.html', {'listing': listing_page})
 
 @login_required
+@login_required
 def profile(request):
     user = request.user
+    user_listings = Listing.objects.filter(user=user)
+
     context = {
         'user_name': user.username,
         'first_name': user.first_name,
@@ -64,12 +67,13 @@ def profile(request):
         'phone': user.phone,
         'avatar': user.avatar.url if user.avatar else None,
         'is_verified': user.is_verified,
+        'user_listings': user_listings,
     }
     return render(request, 'profile.html', context)
 
 
 def edit(request):
-    return render(request, 'edit_list.html')
+    return render(request, 'edit_listing.html')
 
 def create(request):
     if request.method == 'POST':
@@ -87,4 +91,16 @@ def create(request):
 def logout_view(request):
     logout(request)
     return redirect('home')
+@login_required
+def edit_listing(request, listing_id):
+    listing = get_object_or_404(Listing, id=listing_id, user=request.user)
 
+    if request.method == 'POST':
+        form = ListingForm(request.POST, request.FILES, instance=listing)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+    else:
+        form = ListingForm(instance=listing)
+
+    return render(request, 'edit_listing.html', {'form': form, 'listing': listing})
