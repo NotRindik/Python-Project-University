@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, authenticate
 from .models import Listing
 
 User = get_user_model()
@@ -38,18 +38,27 @@ class CustomUserCreationForm(UserCreationForm):
 
         return password2
 class CustomAuthenticationForm(AuthenticationForm):
-    username = forms.CharField(
+    email = forms.EmailField(
         max_length=150,
         required=True,
-        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Username'})
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Email'})
     )
     password = forms.CharField(
-        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Password'}),
+        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Пароль'}),
         required=True
     )
 
-    class Meta:
-        fields = ['username', 'password']
+    def clean(self):
+        email = self.cleaned_data.get('email')
+        password = self.cleaned_data.get('password')
+        if email and password:
+            self.user_cache = authenticate(self.request, email=email, password=password)
+            if self.user_cache is None:
+                raise forms.ValidationError("Неверный email или пароль.")
+        return self.cleaned_data
+
+    def get_user(self):
+        return self.user_cache
 
 class ListingForm(forms.ModelForm):
     class Meta:

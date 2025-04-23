@@ -5,7 +5,7 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.decorators import login_required
 from .models import CustomUser, Listing
 from django.contrib.auth import logout
-from .forms import CustomUserCreationForm, ListingForm
+from .forms import CustomUserCreationForm, ListingForm, CustomAuthenticationForm
 
 
 def home(request):
@@ -35,20 +35,16 @@ def register(request):
 
 def login(request):
     if request.method == "POST":
-        form = forms.CustomAuthenticationForm(request, data=request.POST)
+        form = CustomAuthenticationForm(request, data=request.POST)
         if form.is_valid():
-            email = form.cleaned_data.get('email')
-            password = form.cleaned_data.get('password')
-            user = authenticate(email=email, password=password)
-            if user is not None:
-                auth_login(request, user)
-                return redirect('home')  # или на нужную страницу после логина
-            else:
-                form.add_error(None, "Неверное имя пользователя или пароль.")
+            user = form.get_user()
+            auth_login(request, user)
+            return redirect('home')
     else:
-        form = forms.CustomAuthenticationForm()
+        form = CustomAuthenticationForm()
 
     return render(request, 'LoginPage.html', {'form': form})
+
 
 def listing(request):
     return render(request, 'listing_list.html')
