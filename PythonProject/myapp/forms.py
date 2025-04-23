@@ -37,7 +37,7 @@ class CustomUserCreationForm(UserCreationForm):
             raise forms.ValidationError("Пароль должен содержать хотя бы одну букву.")
 
         return password2
-class CustomAuthenticationForm(AuthenticationForm):
+class CustomAuthenticationForm(forms.Form):
     email = forms.EmailField(
         max_length=150,
         required=True,

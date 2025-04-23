@@ -35,7 +35,8 @@ def register(request):
 
 def login(request):
     if request.method == "POST":
-        form = CustomAuthenticationForm(request, data=request.POST)
+        form = forms.CustomAuthenticationForm(data=request.POST)
+        form.request = request
         if form.is_valid():
             user = form.get_user()
             auth_login(request, user)
