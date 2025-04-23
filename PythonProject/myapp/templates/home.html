@@ -42,20 +42,27 @@
 
 
     <div class="lising">
-        <h1>Объявления</h1>
-            <ul>
-            {% for ad in listing %}
-            <li>
-                <a href="{% url 'listing_detail' ad.id %}">
-                    <h2>{{ ad.title }}</h2>
-                    <p>{{ ad.price }} тг</p>
+    <h1>Объявления</h1>
+    <ul>
+        {% for ad in listing %}
+        <li>
+            <a href="{% url 'listing_detail' ad.id %}">
+                <div class="ad-image">
                     {% if ad.image %}
-                        <img src="{{ ad.image.url }}" width="200">
+                        <img src="{{ ad.image.url }}" alt="{{ ad.title }}">
+                    {% else %}
+                        <img src="{% static 'images/placeholder.png' %}" alt="Нет изображения">
                     {% endif %}
-                </a>
-            </li>
-            {% endfor %}
-            </ul>
-    </div>
+                </div>
+                <div class="ad-details">
+                    <h2>{{ ad.title }}</h2>
+                    <p class="price">{{ ad.price }} тг</p>
+                </div>
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+
 </body>
 </html>

@@ -9,6 +9,15 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from .models import CustomUser
 
+class PhotoUploadForm(forms.ModelForm):
+    class Meta:
+        model = CustomUser
+        fields = ['avatar']
+
+class UploadPhotoListing(forms.ModelForm):
+    class Meta:
+        model = Listing
+        fields = ['image']
 
 class CustomUserCreationForm(UserCreationForm):
     email = forms.EmailField(max_length=255, help_text='Введите действующий email адрес.')
