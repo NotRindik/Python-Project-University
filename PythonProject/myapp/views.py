@@ -104,3 +104,17 @@ def edit_listing(request, listing_id):
         form = ListingForm(instance=listing)
 
     return render(request, 'edit_listing.html', {'form': form, 'listing': listing})
+
+
+from django.core.mail import send_mail
+from django.http import HttpResponse
+
+def test_email(request):
+    send_mail(
+        'Тестовое письмо',
+        'Если ты видишь это письмо — значит все работает!',
+        '41059@iitu.edu.kz',           # from
+        ['41059@iitu.edu.kz'],
+        fail_silently=False,
+    )
+    return HttpResponse("Письмо отправлено!")

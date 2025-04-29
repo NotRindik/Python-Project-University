@@ -137,3 +137,12 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'myapp.CustomUser'
 AUTHENTICATION_BACKENDS = ['myapp.auth_backend.EmailBackend']
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.office365.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = '41059@iitu.edu.kz'         # твоя университетская почта
+EMAIL_HOST_PASSWORD = 'Mke573Vnf'            # обычный пароль (или пароль приложения, если требуется)
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
