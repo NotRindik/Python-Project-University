@@ -16,5 +16,7 @@ urlpatterns = [
     path('edit/', views.edit, name='edit'),
     path('create/', views.create, name='create'),
     path('logout/', LogoutView.as_view(next_page='home'), name='logout'),
-    path('test-email/', views.test_email)
+    path('profile/send-code/', views.send_code, name='send_code'),
+    path('profile/verify/', views.verify_email_form, name='verify_email_form'),
+    path('profile/confirm-code/', views.confirm_code, name='confirm_code'),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

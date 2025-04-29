@@ -206,7 +206,7 @@
           <li><strong>Имя:</strong> {{ first_name }} {{ last_name }}</li>
           <li><strong>Телефон:</strong> {{ phone }}</li>
           <li><strong>Электронная почта:</strong> {{ user.email }}</li>
-          <li><strong>Статус подтверждения:</strong> {% if is_verified %}Подтвержден{% else %}Не подтвержден{% endif %}</li>
+          <li><strong>Статус подтверждения:</strong> {% if is_verified %}Подтвержден{% else %}Не подтвержден <a href="send-code/">Потвердить</a>{% endif %}</li>
         </ul>
       </div>
     </div>

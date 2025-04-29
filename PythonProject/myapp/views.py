@@ -107,14 +107,43 @@ def edit_listing(request, listing_id):
 
 
 from django.core.mail import send_mail
-from django.http import HttpResponse
 
-def test_email(request):
+import random
+from django.shortcuts import render, redirect
+from .models import CustomUser
+
+def send_code(request):
+    code = str(random.randint(1000, 9999))
+    request.session['email_code'] = code  # сохраняем код в сессию
+    request.session['email_verified'] = False
+    user = CustomUser.objects.get(id=request.user.id)
+
     send_mail(
-        'Тестовое письмо',
-        'Если ты видишь это письмо — значит все работает!',
-        '41059@iitu.edu.kz',           # from
-        ['41059@iitu.edu.kz'],
+        'Ваш код подтверждения',
+        f'Введите этот код: {code}',
+        '41059@iitu.edu.kz',
+        [user.email],
         fail_silently=False,
     )
-    return HttpResponse("Письмо отправлено!")
+
+    return redirect('verify_email_form')
+
+
+def verify_email_form(request):
+    return render(request, 'verify_email.html')
+
+
+def confirm_code(request):
+    if request.method == 'POST':
+        input_code = request.POST.get('code')
+        session_code = request.session.get('email_code')
+
+        if input_code == session_code:
+            request.session['email_verified'] = True
+            request.user.is_verified = True
+            request.user.save()
+            return redirect('profile.html')
+        else:
+            return render(request, 'verify_email.html', {'error': 'Неверный код'})
+
+    return redirect('verify_email_form')

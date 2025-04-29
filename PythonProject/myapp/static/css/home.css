@@ -1,3 +1,206 @@
+/* Общие стили */
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f7f7f7;
+    color: #333;
+}
+
+/* Шапка сайта */
+.header {
+    background: linear-gradient(135deg, #ff5733, #ff914d);
+    color: white;
+    padding: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 600;
+}
+
+/* Кнопки */
+.buttons button {
+    padding: 12px 25px;
+    border: none;
+    cursor: pointer;
+    background-color: #ff914d;
+    color: white;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: 0.3s;
+    font-weight: 500;
+}
+
+.buttons button:hover {
+    background-color: #e77e4a;
+}
+
+/* Поиск */
+.search-bar {
+    margin: 20px auto;
+    text-align: center;
+}
+
+.search-bar input {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    width: 60%;
+    max-width: 600px;
+}
+
+.search-bar button {
+    padding: 10px 20px;
+    background-color: #ff914d;
+    color: white;
+    border-radius: 8px;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.search-bar button:hover {
+    background-color: #e77e4a;
+}
+
+/* Категории */
+.categories {
+    margin-top: 40px;
+    text-align: center;
+}
+
+.categories h2 {
+    font-size: 28px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.category-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.category-buttons button {
+    padding: 12px 25px;
+    background-color: #ff5733;
+    color: white;
+    border-radius: 8px;
+    font-size: 18px;
+    border: none;
+    transition: background-color 0.3s;
+}
+
+.category-buttons button:hover {
+    background-color: #e64a19;
+}
+
+/* Список объявлений */
+.lising {
+    margin-top: 50px;
+    padding: 0 20px;
+}
+
+.lising h1 {
+    text-align: center;
+    font-size: 36px;
+    color: #444;
+    margin-bottom: 30px;
+}
+
+.lising ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.lising li {
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: center;
+}
+
+.lising a {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    max-width: 1000px;
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    text-decoration: none;
+    transition: transform 0.3s;
+}
+
+.lising a:hover {
+    transform: scale(1.02);
+}
+
+.ad-image img {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-right: 20px;
+}
+
+.ad-details {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.ad-details h2 {
+    font-size: 20px;
+    color: #333;
+    margin: 0;
+}
+
+.price {
+    font-size: 18px;
+    font-weight: 500;
+    margin-top: 10px;
+    color: #ff5733;
+}
+
+/* Для адаптивности */
+@media (max-width: 768px) {
+    .search-bar input {
+        width: 80%;
+    }
+
+    .category-buttons {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .lising a {
+        flex-direction: column;
+    }
+
+    .ad-image img {
+        width: 100%;
+        height: auto;
+    }
+
+    .ad-details {
+        padding: 10px;
+    }
+}
+
+
+
+
+
 .lising {
     max-width: 1200px;
     margin: 0 auto;
