@@ -19,5 +19,5 @@ urlpatterns = [
     path('profile/send-code/', views.send_code, name='send_code'),
     path('profile/verify/', views.verify_email_form, name='verify_email_form'),
     path('profile/confirm-code/', views.confirm_code, name='confirm_code'),
-    path('profile/chat/', views.chat_view, name='chat'),
+    path('profile/chat/', views.chat_list_view, name='chat'),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
