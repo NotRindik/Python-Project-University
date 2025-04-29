@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from .models import CustomUser, Listing
 from django.contrib.auth import logout
 from .forms import CustomUserCreationForm, ListingForm, CustomAuthenticationForm
-
+from django.http import HttpResponseForbidden
 
 def home(request):
     listing_page = Listing.objects.all()
@@ -211,3 +211,13 @@ def chat_messages_ajax(request, user_id):
     html = render_to_string('messages.html', {'messages': messages,'request': request})
     return JsonResponse({'html': html})
 
+def delete_listing(request,pk):
+    listing = get_object_or_404(Listing, id=pk)
+    if listing.user != request.user:
+        return HttpResponseForbidden("Вы не можете удалить это объявление.")
+
+    if request.method == "POST":
+        listing.delete()
+        return redirect('profile')
+
+    return redirect('profile')

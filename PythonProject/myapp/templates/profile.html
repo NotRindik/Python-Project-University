@@ -230,6 +230,10 @@
                 <p class="card-text">{{ listing.description|truncatewords:20 }}</p>
                 <a href="{% url 'listing_detail' listing.id %}" class="btn">Посмотреть</a>
                 <a href="{% url 'edit_listing' listing.id %}" class="btn btn-edit">Редактировать</a>
+                <form action="{% url 'delete_listing' listing.id %}" method="post" onsubmit="return confirm('Вы уверены, что хотите удалить объявление?');">
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-danger">Удалить</button>
+                </form>
               </div>
             </div>
           </div>
