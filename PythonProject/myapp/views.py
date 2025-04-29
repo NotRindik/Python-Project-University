@@ -156,7 +156,7 @@ def confirm_code(request):
             request.session['email_verified'] = True
             request.user.is_verified = True
             request.user.save()
-            return redirect('profile.html')
+            return redirect('/profile/')
         else:
             return render(request, 'verify_email.html', {'error': 'Неверный код'})
 
