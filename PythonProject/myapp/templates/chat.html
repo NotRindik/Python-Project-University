@@ -3,22 +3,37 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-  <link rel="stylesheet" href="{% static 'css/chat.css' %}">
+    <title>Чаты</title>
+    <link rel="stylesheet" href="{% static 'css/chat.css' %}">
 </head>
 <body>
-      <div class="chat-container">
-  <div class="chat-users">
-    <ul>
-      <li onclick="openChat(2)">Продавец Иван</li>
-      <li onclick="openChat(3)">Продавец Айгуль</li>
-    </ul>
-  </div>
-  <div class="chat-box">
-    <div class="messages" id="chatMessages"></div>
-    <input type="text" id="chatInput" placeholder="Напишите сообщение..." />
-    <button onclick="sendMessage()">Отправить</button>
-  </div>
+<div class="chat-container">
+    <div class="chat-users">
+        <div class="header">
+            <h2>Ваши чаты</h2>
+        <a href="{% url 'profile'%}"><h3>Профиль</h3></a>
+        <a href="{% url 'home'%}"><h3>Главная Страница</h3></a>
+        </div>
+
+        <ul>
+            {% for user in chat_users %}
+                <li>
+                    <a href="{% url 'chat_detail_view' user.id %}">
+                        <div class="user-avatar">
+                            {% if user.avatar %}
+                                <img src="{{ user.avatar.url }}" alt="{{ user.first_name }}">
+                            {% else %}
+                                <img src="{% static 'img/default-avatar.png' %}" alt="default">
+                            {% endif %}
+                        </div>
+                        <div class="user-info">
+                            <div class="user-name">{{ user.first_name }} {{ user.last_name }}</div>
+                        </div>
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
 </div>
 </body>
 </html>

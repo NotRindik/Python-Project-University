@@ -75,3 +75,15 @@ class ListingForm(forms.ModelForm):
         fields = ['title', 'description', 'price', 'category', 'location', 'image']
 
 
+from .models import Message
+
+class MessageForm(forms.ModelForm):
+    class Meta:
+        model = Message
+        fields = ['content']
+        widgets = {
+            'content': forms.Textarea(attrs={
+                'rows': 2,
+                'placeholder': 'Введите сообщение...'
+            })
+        }

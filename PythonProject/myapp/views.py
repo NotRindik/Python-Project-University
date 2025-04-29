@@ -145,7 +145,7 @@ def chat_list_view(request):
         except CustomUser.DoesNotExist:
             pass
 
-    return render(request, 'chat/chat_list.html', {'chat_users': chat_users})
+    return render(request, 'chat.html', {'chat_users': chat_users})
 
 def confirm_code(request):
     if request.method == 'POST':
@@ -162,11 +162,52 @@ def confirm_code(request):
 
     return redirect('verify_email_form')
 
-
+from .models import Message, CustomUser
 def get_chat_users_for(current_user):
-    # Все пользователи, участвующие в диалоге (исключая самого себя)
     sent = Message.objects.filter(sender=current_user).values_list('recipient', flat=True)
     received = Message.objects.filter(recipient=current_user).values_list('sender', flat=True)
 
     user_ids = set(sent).union(received)
     return CustomUser.objects.filter(id__in=user_ids)
+
+from django.db.models import Q
+from .forms import MessageForm  # создадим форму ниже
+@login_required
+def chat_detail_view(request, user_id):
+    current_user = request.user
+    other_user = get_object_or_404(CustomUser, id=user_id)
+
+    if current_user == other_user:
+        print(f'{current_user.id} and {other_user.id} is Fucking EEqual')
+
+    if request.method == 'POST':
+        form = MessageForm(request.POST)
+        if form.is_valid():
+            new_msg = form.save(commit=False)
+            new_msg.sender = current_user
+            new_msg.recipient = other_user
+            new_msg.save()
+            return redirect(f'/profile/chat/{other_user.id}/', user_id=other_user.id)
+    else:
+        form = MessageForm()
+
+    return render(request, 'chat_detail.html', {
+        'form': form,
+        'other_user': other_user,
+    })
+
+from django.http import JsonResponse
+from django.template.loader import render_to_string
+from .models import Message
+
+@login_required
+def chat_messages_ajax(request, user_id):
+    current_user = request.user
+    other_user = get_object_or_404(CustomUser, id=user_id)
+    messages = Message.objects.filter(
+        Q(sender=current_user, recipient=other_user) |
+        Q(sender=other_user, recipient=current_user)
+    ).order_by('timestamp')
+    html = render_to_string('messages.html', {'messages': messages,'request': request})
+    return JsonResponse({'html': html})
+

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Чат с {{ other_user.first_name }}</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background-color: #f9f9f9;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+    }
+
+    .chat-box {
+      background-color: white;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 15px;
+      max-height: 400px;
+      overflow-y: scroll;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+
+    .message {
+      margin-bottom: 12px;
+      padding: 10px;
+      border-radius: 6px;
+      max-width: 70%;
+      word-wrap: break-word;
+      position: relative;
+    }
+
+    .message.you {
+      background-color: #dcf8c6;
+      align-self: flex-end;
+      margin-left: auto;
+    }
+
+    .message.other {
+      background-color: #f1f0f0;
+      align-self: flex-start;
+      margin-right: auto;
+    }
+
+    .timestamp {
+      display: block;
+      font-size: 0.75rem;
+      color: #888;
+      margin-top: 4px;
+      text-align: right;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    textarea, input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+    }
+
+    button {
+      align-self: flex-end;
+      padding: 10px 20px;
+      font-size: 1rem;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .chat-container {
+      display: flex;
+      flex-direction: column;
+    }
+
+    a {
+      display: inline-block;
+      margin-top: 20px;
+      color: #007bff;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+  function loadMessages() {
+    // Сохраняем текущее состояние прокрутки
+    var isScrolledToBottom = $('.chat-box').scrollTop() + $('.chat-box').innerHeight() >= $('.chat-box')[0].scrollHeight;
+
+    $.get("{% url 'chat_messages_ajax' other_user.id %}", function(data) {
+      $('.chat-box').html(data.html);
+
+      // Если пользователь был внизу, прокручиваем вниз, иначе оставляем прокрутку на месте
+      if (isScrolledToBottom) {
+        $('.chat-box').scrollTop($('.chat-box')[0].scrollHeight);
+      }
+    });
+  }
+
+  setInterval(loadMessages, 1000); // запускаем обновление
+
+  $('form').on('submit', function(e) {
+    e.preventDefault();
+    var formData = $(this).serialize();
+
+    $.post("{% url 'chat_detail_view' other_user.id %}", formData, function(response) {
+      loadMessages();
+      $('textarea, input[type="text"]').val('');  // очищаем форму
+    });
+  });
+});
+
+
+</script>
+</head>
+<body>
+
+  <h2>Чат с {{ other_user.first_name }} {{ other_user.last_name }}</h2>
+
+  <div class="chat-box chat-container">
+    {% for msg in messages %}
+      <div class="message {% if msg.sender == request.user %}you{% else %}other{% endif %}">
+        <strong>{% if msg.sender == request.user %}Вы:{% else %}Он/Она:{% endif %}</strong><br>
+        {{ msg.content }}
+        <span class="timestamp">{{ msg.timestamp|date:"H:i d.m.Y" }}</span>
+      </div>
+    {% empty %}
+      <p>Нет сообщений.</p>
+    {% endfor %}
+  </div>
+
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Отправить</button>
+  </form>
+
+  <a href="{% url 'chat_list' %}">← Назад к списку чатов</a>
+
+</body>
+</html>
