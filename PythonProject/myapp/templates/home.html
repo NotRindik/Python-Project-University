@@ -14,7 +14,7 @@
             {% if user.is_authenticated %}
                 <button onclick="location.href='{% url 'profile' %}'">Profile</button>
                 <button onclick="location.href='{% url 'create' %}'">Create listing</button>
-
+                <button onclick="location.href='{% url 'chat_list' %}'">My chats</button>
             {% else %}
                 <button onclick="location.href='{% url 'register' %}'">Sign In</button>
                 <button onclick="location.href='{% url 'login' %}'">Log In</button>
@@ -43,7 +43,7 @@
 
     <div class="lising">
     <h1>Объявления</h1>
-    <ul>
+        <ul>
         {% for ad in listing %}
         <li>
             <a href="{% url 'listing_detail' ad.id %}">
