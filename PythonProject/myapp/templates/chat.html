@@ -1,0 +1,24 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+  <link rel="stylesheet" href="{% static 'css/chat.css' %}">
+</head>
+<body>
+      <div class="chat-container">
+  <div class="chat-users">
+    <ul>
+      <li onclick="openChat(2)">Продавец Иван</li>
+      <li onclick="openChat(3)">Продавец Айгуль</li>
+    </ul>
+  </div>
+  <div class="chat-box">
+    <div class="messages" id="chatMessages"></div>
+    <input type="text" id="chatInput" placeholder="Напишите сообщение..." />
+    <button onclick="sendMessage()">Отправить</button>
+  </div>
+</div>
+</body>
+</html>

@@ -132,6 +132,20 @@ def send_code(request):
 def verify_email_form(request):
     return render(request, 'verify_email.html')
 
+def chat_list_view(request):
+    current_user = request.user
+    chat_users = get_chat_users_for(current_user)
+
+    listing_user_id = request.GET.get("user_id")  # ID продавца через товар, например /chat?user_id=42
+    if listing_user_id:
+        try:
+            extra_user = CustomUser.objects.get(id=listing_user_id)
+            if extra_user not in chat_users:
+                chat_users = list(chat_users) + [extra_user]
+        except CustomUser.DoesNotExist:
+            pass
+
+    return render(request, 'chat/chat_list.html', {'chat_users': chat_users})
 
 def confirm_code(request):
     if request.method == 'POST':
@@ -147,3 +161,12 @@ def confirm_code(request):
             return render(request, 'verify_email.html', {'error': 'Неверный код'})
 
     return redirect('verify_email_form')
+
+
+def get_chat_users_for(current_user):
+    # Все пользователи, участвующие в диалоге (исключая самого себя)
+    sent = Message.objects.filter(sender=current_user).values_list('recipient', flat=True)
+    received = Message.objects.filter(recipient=current_user).values_list('sender', flat=True)
+
+    user_ids = set(sent).union(received)
+    return CustomUser.objects.filter(id__in=user_ids)
