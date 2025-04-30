@@ -8,6 +8,7 @@ from django.contrib.auth import logout
 from .forms import CustomUserCreationForm, ListingForm, CustomAuthenticationForm
 from django.http import HttpResponseForbidden
 
+
 def home(request):
     listing_page = Listing.objects.all()
     return render(request, 'home.html', {'listing': listing_page})
@@ -221,3 +222,4 @@ def delete_listing(request,pk):
         return redirect('profile')
 
     return redirect('profile')
+
