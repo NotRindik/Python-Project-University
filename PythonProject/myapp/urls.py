@@ -4,6 +4,7 @@ from . import views
 from django.conf import settings
 from django.conf.urls.static import static
 from .views import logout_view
+from .views import edit_profile_view
 
 urlpatterns = [
     path('', views.home, name='home'),
@@ -17,6 +18,7 @@ urlpatterns = [
     path('edit/', views.edit, name='edit'),
     path('create/', views.create, name='create'),
     path('logout/', LogoutView.as_view(next_page='home'), name='logout'),
+    path('profile/edit/', edit_profile_view, name='edit_profile'),
     path('profile/send-code/', views.send_code, name='send_code'),
     path('profile/verify/', views.verify_email_form, name='verify_email_form'),
     path('profile/confirm-code/', views.confirm_code, name='confirm_code'),

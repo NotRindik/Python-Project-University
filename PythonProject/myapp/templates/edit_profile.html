@@ -1,0 +1,148 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Изменение профиля</title>
+    <style>
+            body {
+      font-family: 'Roboto', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f7f7f7;
+      color: #333;
+    }
+        .profile-edit-container {
+    width: 80%;
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+.profile-edit-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+.profile-photo-container {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.profile-photo {
+    margin-bottom: 10px;
+}
+
+.profile-photo-img {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #ddd;
+}
+
+.profile-photo-input {
+    display: block;
+    margin: 15px auto;
+}
+
+.input-group {
+    margin-bottom: 15px;
+}
+
+.input-group label {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.input-field {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.status-text {
+    font-size: 14px;
+}
+
+.save-button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.save-button:hover {
+    background-color: #45a049;
+}
+    </style>
+</head>
+<body>
+
+{% block content %}
+<div class="profile-edit-container">
+    <h2>Редактировать профиль</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="profile-photo-container">
+            <label for="avatar" class="profile-photo-label">Фото профиля</label>
+            <div class="profile-photo">
+                {% if user.avatar %}
+                    <img src="{{ user.avatar.url }}" alt="Фото профиля" class="profile-photo-img">
+                {% else %}
+                    <img src="{% static 'images/default-avatar.jpg' %}" alt="Фото профиля" class="profile-photo-img">
+                {% endif %}
+            </div>
+            <input type="file" name="avatar" id="avatar" accept="image/*" class="profile-photo-input">
+        </div>
+
+        <div class="input-group">
+            <label for="first_name">Имя</label>
+            <input type="text" name="first_name" id="first_name" value="{{ user.first_name }}" class="input-field" required>
+        </div>
+
+        <div class="input-group">
+            <label for="last_name">Фамилия</label>
+            <input type="text" name="last_name" id="last_name" value="{{ user.last_name }}" class="input-field" required>
+        </div>
+
+        <div class="input-group">
+            <label for="email">Электронная почта</label>
+            <input type="email" name="email" id="email" value="{{ user.email }}" class="input-field" required>
+        </div>
+
+        <div class="input-group">
+            <label for="phone">Телефон</label>
+            <input type="text" name="phone" id="phone" value="{{ user.profile.phone }}" class="input-field">
+        </div>
+
+        <div class="input-group">
+            <label for="status">Статус</label>
+            <p class="status-text">
+                {% if user.is_verified %}
+                    Подтвержден
+                {% else %}
+                    Не подтвержден <a href="{% url 'send_code' %}">Подтвердить</a>
+                {% endif %}
+            </p>
+        </div>
+
+        <button type="submit" class="save-button">Сохранить изменения</button>
+    </form>
+</div>
+{% endblock %}
+</body>
+</html>

@@ -7,7 +7,7 @@ from .models import CustomUser, Listing
 from django.contrib.auth import logout
 from .forms import CustomUserCreationForm, ListingForm, CustomAuthenticationForm
 from django.http import HttpResponseForbidden
-
+from .forms import ProfileUpdateForm
 
 def home(request):
     listing_page = Listing.objects.all()
@@ -223,3 +223,14 @@ def delete_listing(request,pk):
 
     return redirect('profile')
 
+def edit_profile_view(request):
+    user = request.user  # получаем текущего пользователя
+    if request.method == 'POST':
+        form = ProfileUpdateForm(request.POST, request.FILES, instance=user)
+        if form.is_valid():
+            form.save()  # сохраняем изменения
+            return redirect('profile')  # редирект на страницу профиля (можно заменить на нужный путь)
+    else:
+        form = ProfileUpdateForm(instance=user)  # создаем форму с текущими данными пользователя
+
+    return render(request, 'edit_profile.html', {'form': form})
