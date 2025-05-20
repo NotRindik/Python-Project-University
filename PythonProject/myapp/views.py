@@ -10,8 +10,17 @@ from django.http import HttpResponseForbidden
 from .forms import ProfileUpdateForm
 
 def home(request):
-    listing_page = Listing.objects.all()
-    return render(request, 'home.html', {'listing': listing_page})
+    query = request.GET.get('q')
+    if query:
+        listing_page = Listing.objects.filter(title__icontains=query)
+    else:
+        listing_page = Listing.objects.all()
+
+    context = {
+        'query': query,
+        'listing': listing_page,
+    }
+    return render(request, 'home.html', context)
 
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
@@ -234,3 +243,4 @@ def edit_profile_view(request):
         form = ProfileUpdateForm(instance=user)  # создаем форму с текущими данными пользователя
 
     return render(request, 'edit_profile.html', {'form': form})
+
