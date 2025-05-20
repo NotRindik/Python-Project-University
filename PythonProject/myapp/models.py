@@ -17,7 +17,6 @@ class CustomUserManager(BaseUserManager):
         if not email:
             raise ValueError("The Email field must be set")
 
-        # Проверка на REQUIRED_FIELDS
         for field in self.model.REQUIRED_FIELDS:
             if not extra_fields.get(field):
                 raise ValueError(f"The {field} field must be set")
@@ -67,7 +66,7 @@ class Listing(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
 
-    image = models.ImageField(upload_to='listing_images/', blank=True, null=True)  # <- добавь ЭТО
+    image = models.ImageField(upload_to='listing_images/', blank=True, null=True)
 
     def __str__(self):
         return self.title
