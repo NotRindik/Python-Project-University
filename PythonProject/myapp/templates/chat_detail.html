@@ -104,20 +104,20 @@
 <script>
 $(document).ready(function() {
   function loadMessages() {
-    // Сохраняем текущее состояние прокрутки
+
     var isScrolledToBottom = $('.chat-box').scrollTop() + $('.chat-box').innerHeight() >= $('.chat-box')[0].scrollHeight;
 
     $.get("{% url 'chat_messages_ajax' other_user.id %}", function(data) {
       $('.chat-box').html(data.html);
 
-      // Если пользователь был внизу, прокручиваем вниз, иначе оставляем прокрутку на месте
+
       if (isScrolledToBottom) {
         $('.chat-box').scrollTop($('.chat-box')[0].scrollHeight);
       }
     });
   }
 
-  setInterval(loadMessages, 1000); // запускаем обновление
+  setInterval(loadMessages, 1000);
 
   $('form').on('submit', function(e) {
     e.preventDefault();
@@ -125,7 +125,7 @@ $(document).ready(function() {
 
     $.post("{% url 'chat_detail_view' other_user.id %}", formData, function(response) {
       loadMessages();
-      $('textarea, input[type="text"]').val('');  // очищаем форму
+      $('textarea, input[type="text"]').val('');
     });
   });
 });

@@ -1,7 +1,7 @@
 {% for msg in messages %}
     <div class="message {% if msg.sender == request.user %}you{% else %}other{% endif %}">
         <strong>{% if msg.sender == request.user %}Вы:{% else %}Он/Она:{% endif %}</strong><br>
-        <p>{{ msg.content }}</p>  <!-- добавлен <p> для правильного отображения текста -->
+        <p>{{ msg.content }}</p>
         <span class="timestamp">{{ msg.timestamp|date:"H:i d.m.Y" }}</span>
     </div>
 {% empty %}

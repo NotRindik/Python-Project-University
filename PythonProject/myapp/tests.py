@@ -154,12 +154,10 @@ class AuthenticatedViewsTest(TestCase):
                 'image': image
             })
 
-            # Проверяем редирект после успешного создания
+
             self.assertEqual(response.status_code, 302)
 
-            # Проверяем, что объявление появилось в БД
             new_listing = Listing.objects.get(title='New iPhone')
             self.assertEqual(new_listing.user, self.user)
 
-            # Проверяем, что изображение сохранилось
             self.assertTrue(new_listing.image.name.endswith('test_image.jpg'))

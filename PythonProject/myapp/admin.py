@@ -6,9 +6,9 @@ from django.contrib.auth.admin import UserAdmin
 from .models import CustomUser, Listing
 @admin.register(Task)
 class TaskAdmin(admin.ModelAdmin):
-    list_display = ('title', 'created_at')  # Поля, которые будут
-    search_fields = ('title',)  # Поиск по названию задачи
-    list_filter = ('created_at',)  # Фильтр по дате создания
+    list_display = ('title', 'created_at')
+    search_fields = ('title',)
+    list_filter = ('created_at',)
 class CustomUserAdmin(UserAdmin):
     model = CustomUser
     list_display = ('email', 'email', 'phone', 'is_verified', 'is_staff')

@@ -1,4 +1,4 @@
-/* Общие стили */
+
 body {
     font-family: 'Roboto', sans-serif;
     margin: 0;
@@ -7,7 +7,7 @@ body {
     color: #333;
 }
 
-/* Шапка сайта */
+
 .header {
     background: linear-gradient(135deg, #ff5733, #ff914d);
     color: white;
@@ -24,7 +24,7 @@ body {
     font-weight: 600;
 }
 
-/* Кнопки */
+
 .buttons button {
     padding: 12px 25px;
     border: none;
@@ -41,7 +41,7 @@ body {
     background-color: #e77e4a;
 }
 
-/* Поиск */
+
 .search-bar {
     margin: 20px auto;
     text-align: center;
@@ -71,7 +71,7 @@ body {
     background-color: #e77e4a;
 }
 
-/* Категории */
+
 .categories {
     margin-top: 40px;
     text-align: center;
@@ -103,7 +103,7 @@ body {
     background-color: #e64a19;
 }
 
-/* Список объявлений */
+
 .lising {
     margin-top: 50px;
     padding: 0 20px;
@@ -172,7 +172,7 @@ body {
     color: #ff5733;
 }
 
-/* Для адаптивности */
+
 @media (max-width: 768px) {
     .search-bar input {
         width: 80%;

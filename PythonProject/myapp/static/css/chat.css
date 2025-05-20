@@ -21,15 +21,15 @@
     font-weight: 600;
     text-shadow: 1px 1px rgba(0, 0, 0, 0.1);
 
-    display: flex;  /* Используем flexbox для размещения элементов в одну строку */
-    align-items: center;  /* Центрируем элементы по вертикали */
-    justify-content: space-between;  /* Расставляем элементы по краям */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .chat-users .header a {
     color: white;
     text-decoration: none;
-    margin-left: 20px;  /* Отступ между ссылками */
+    margin-left: 20px;
 }
 .chat-users ul {
     list-style-type: none;

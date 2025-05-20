@@ -130,7 +130,7 @@ from .models import CustomUser
 
 def send_code(request):
     code = str(random.randint(1000, 9999))
-    request.session['email_code'] = code  # сохраняем код в сессию
+    request.session['email_code'] = code
     request.session['email_verified'] = False
     user = CustomUser.objects.get(id=request.user.id)
 
@@ -152,7 +152,7 @@ def chat_list_view(request):
     current_user = request.user
     chat_users = get_chat_users_for(current_user)
 
-    listing_user_id = request.GET.get("user_id")  # ID продавца через товар, например /chat?user_id=42
+    listing_user_id = request.GET.get("user_id")
     if listing_user_id:
         try:
             extra_user = CustomUser.objects.get(id=listing_user_id)
@@ -187,12 +187,11 @@ def get_chat_users_for(current_user):
     return CustomUser.objects.filter(id__in=user_ids)
 
 from django.db.models import Q
-from .forms import MessageForm  # создадим форму ниже
+from .forms import MessageForm
 @login_required
 def chat_detail_view(request, user_id):
     current_user = request.user
     other_user = get_object_or_404(CustomUser, id=user_id)
-
     if current_user == other_user:
         print(f'{current_user.id} and {other_user.id} is Fucking EEqual')
 
@@ -239,14 +238,14 @@ def delete_listing(request,pk):
     return redirect('profile')
 
 def edit_profile_view(request):
-    user = request.user  # получаем текущего пользователя
+    user = request.user
     if request.method == 'POST':
         form = ProfileUpdateForm(request.POST, request.FILES, instance=user)
         if form.is_valid():
-            form.save()  # сохраняем изменения
-            return redirect('profile')  # редирект на страницу профиля (можно заменить на нужный путь)
+            form.save()
+            return redirect('profile')
     else:
-        form = ProfileUpdateForm(instance=user)  # создаем форму с текущими данными пользователя
+        form = ProfileUpdateForm(instance=user)
 
     return render(request, 'edit_profile.html', {'form': form})
 

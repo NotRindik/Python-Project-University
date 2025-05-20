@@ -31,8 +31,8 @@ h2 {
 }
 
 input {
-    width: 80%; /* Уменьшена ширина полей */
-    max-width: 300px; /* Ограничена максимальная ширина */
+    width: 80%;
+    max-width: 300px;
     padding: 12px;
     margin: 12px 0;
     border: 1px solid #ff9800;
@@ -47,8 +47,8 @@ input:focus {
 }
 
 button {
-    width: 80%; /* Уменьшена ширина кнопки */
-    max-width: 300px; /* Ограничена максимальная ширина */
+    width: 80%;
+    max-width: 300px;
     background: linear-gradient(to right, #ff9800, #e65100);
     color: white;
     border: none;
