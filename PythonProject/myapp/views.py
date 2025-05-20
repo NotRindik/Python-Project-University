@@ -10,15 +10,21 @@ from django.http import HttpResponseForbidden
 from .forms import ProfileUpdateForm
 
 def home(request):
-    query = request.GET.get('q')
+    query = request.GET.get('q', '')
+    category = request.GET.get('category', '')
+
+    listings = Listing.objects.all()
+
+    if category:
+        listings = listings.filter(category=category)
+
     if query:
-        listing_page = Listing.objects.filter(title__icontains=query)
-    else:
-        listing_page = Listing.objects.all()
+        listings = listings.filter(title__icontains=query)
 
     context = {
+        'listing': listings,
         'query': query,
-        'listing': listing_page,
+        'category': category,
     }
     return render(request, 'home.html', context)
 
