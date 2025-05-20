@@ -1,13 +1,34 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
-class Task(models.Model): 
+class Task(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.title
+
+
+from django.contrib.auth.models import BaseUserManager
+
+class CustomUserManager(BaseUserManager):
+    def create_user(self, email, password=None, **extra_fields):
+        if not email:
+            raise ValueError("The Email field must be set")
+
+        # Проверка на REQUIRED_FIELDS
+        for field in self.model.REQUIRED_FIELDS:
+            if not extra_fields.get(field):
+                raise ValueError(f"The {field} field must be set")
+
+        email = self.normalize_email(email)
+        extra_fields.setdefault("is_active", True)
+        user = self.model(email=email, **extra_fields)
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
 
 
 class CustomUser(AbstractUser):
@@ -30,6 +51,7 @@ class CustomUser(AbstractUser):
         related_name='custom_user_permissions_set',
         blank=True
     )
+    objects = CustomUserManager()
 
     def __str__(self):
         return self.email
@@ -51,14 +73,6 @@ class Listing(models.Model):
         return self.title
 
 
-class ListingImage(models.Model):
-    listing = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name='images')
-    image = models.ImageField(upload_to='listing_images/')
-
-    def __str__(self):
-        return f'Image for {self.listing.title}'
-
-
 class Message(models.Model):
     sender = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='sent_messages')
     recipient = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='received_messages')
@@ -67,18 +81,3 @@ class Message(models.Model):
 
     def __str__(self):
         return f'Message from {self.sender} to {self.recipient}'
-
-
-class Payment(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='payments')
-    listing = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name='payments')
-    amount = models.DecimalField(max_digits=10, decimal_places=2)
-    status = models.CharField(
-        max_length=20,
-        choices=[('pending', 'Pending'), ('completed', 'Completed'), ('failed', 'Failed')],
-        default='pending'
-    )
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f'Payment of {self.amount} by {self.user} for {self.listing}'
