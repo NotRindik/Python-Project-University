@@ -13,7 +13,7 @@ def home(request):
     query = request.GET.get('q', '')
     category = request.GET.get('category', '')
 
-    listings = Listing.objects.all()
+    listings = Listing.objects.order_by('-created_at')
 
     if category:
         listings = listings.filter(category=category)
