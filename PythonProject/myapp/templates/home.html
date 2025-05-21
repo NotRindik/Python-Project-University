@@ -13,7 +13,7 @@
         <div class="buttons">
             {% if user.is_authenticated %}
                 <button onclick="location.href='{% url 'profile' %}'">Profile</button>
-                <button onclick="location.href='{% url 'create' %}'">Create listing</button>
+                {% if user.is_verified %}<button onclick="location.href='{% url 'create' %}'">Create listing</button>{% endif %}
                 <button onclick="location.href='{% url 'chat_list' %}'">My chats</button>
             {% else %}
                 <button onclick="location.href='{% url 'register' %}'">Sign In</button>
