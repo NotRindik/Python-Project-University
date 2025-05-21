@@ -119,7 +119,7 @@ $(document).ready(function() {
 
   setInterval(loadMessages, 1000);
 
-  $('form').on('submit', function(e) {
+  $('form' ).on('submit', function(e) {
     e.preventDefault();
     var formData = $(this).serialize();
 
